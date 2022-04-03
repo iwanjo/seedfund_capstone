@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "673362522940",
+    "project_id": "seedfund-capstone",
+    "storage_bucket": "seedfund-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673362522940:android:0f3e4d3cbfe9ead80a6439",
+        "android_client_info": {
+          "package_name": "com.example.seedfund_capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673362522940-c6jhvlkun6lghn3vgou869takr0ok2ef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtSLYJUrAK7nHlQJEdpFUrjR-NPET7DJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673362522940-c6jhvlkun6lghn3vgou869takr0ok2ef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
