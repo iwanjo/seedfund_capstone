@@ -1,9 +1,8 @@
-import 'package:Seedfund/model/sme_user.dart';
-import 'package:Seedfund/views/sme-auth/register.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Seedfund/views/sme-views/sme_discover.dart';
+import 'package:Seedfund/views/sme-views/sme_home.dart';
+import 'package:Seedfund/views/sme-views/sme_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class SMEPageRouting extends StatefulWidget {
@@ -15,61 +14,62 @@ class SMEPageRouting extends StatefulWidget {
 }
 
 class _SMEPageRoutingState extends State<SMEPageRouting> {
-  User? user = FirebaseAuth.instance.currentUser;
-  SMEUserModel userModel = SMEUserModel();
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("sme_users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      // ignore: unnecessary_this
-      this.userModel = SMEUserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
+  int _selectedIndex = 0;
+  final loggedInUser = FirebaseAuth.instance.currentUser;
+  late final List<Widget> _widgetOptions = <Widget>[
+    SMEHome(
+      uid: loggedInUser!.uid,
+    ),
+    SMEDiscover(
+      uid: loggedInUser!.uid,
+    ),
+    SMEProfile(
+      uid: loggedInUser!.uid,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () => null,
-              ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: SalomonBottomBar(
+          items: [
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.home),
               title: const Text(
-                "Sign out",
+                "Home",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
               ),
-              onTap: () {
-                FirebaseAuth auth = FirebaseAuth.instance;
-                auth.signOut().then((res) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SMERegister()),
-                      (Route<dynamic> route) => false);
-                });
-              },
-            )
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.category),
+              title: const Text(
+                "Discover",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text(
+                "Profile",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
           ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Text("${userModel.fullname}"),
-            Text("${userModel.companyname}"),
-            Text("${userModel.email}"),
-          ],
-        ),
-      ),
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:Seedfund/investor_routing.dart';
+import 'package:Seedfund/sme_routing.dart';
 import 'package:Seedfund/views/onboarding-views/onboarding_one.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,7 +54,7 @@ class SeedfundSplashScreen extends StatelessWidget {
       loadingTextPadding: const EdgeInsets.all(0),
       useLoader: true,
       navigateAfterSeconds:
-          result != null ? const InvestorPageRouting() : const OnboardingOne(),
+          result != null ? const SMEPageRouting() : const OnboardingOne(),
       seconds: 4,
     );
   }

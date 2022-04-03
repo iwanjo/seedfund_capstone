@@ -1,5 +1,6 @@
 import 'package:Seedfund/sme_routing.dart';
 import 'package:Seedfund/views/sme-auth/register.dart';
+import 'package:Seedfund/views/sme-views/sme_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Seedfund/investor_routing.dart';
@@ -21,6 +22,7 @@ class _SMELoginState extends State<SMELogin> {
 
   // Firebase Authentication
   final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +155,7 @@ class _SMELoginState extends State<SMELogin> {
                                             setState(() {
                                               isLoading = true;
                                             });
-                                            loginSMEUser(emailController.text,
+                                            loginUser(emailController.text,
                                                 passwordController.text);
                                           }
                                         },
@@ -192,18 +194,16 @@ class _SMELoginState extends State<SMELogin> {
     );
   }
 
-  void loginSMEUser(String email, String password) async {
+  void loginUser(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((result) => {
                 isLoading = false,
-                Fluttertoast.showToast(msg: "Successful Login to your account"),
+                Fluttertoast.showToast(msg: "Login Successful!"),
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => SMEPageRouting(
-                      uid: result.user!.uid,
-                    ),
+                    builder: (context) => SMEPageRouting(uid: result.user!.uid),
                   ),
                 ),
               });
@@ -214,5 +214,12 @@ class _SMELoginState extends State<SMELogin> {
     setState(() {
       _hiddenPass = !_hiddenPass;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 }

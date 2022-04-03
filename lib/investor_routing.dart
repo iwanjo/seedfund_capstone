@@ -1,8 +1,13 @@
 import 'package:Seedfund/model/user_model.dart';
 import 'package:Seedfund/views/investor-auth/investor_registration.dart';
+import 'package:Seedfund/views/investor-views/investor_chat.dart';
+import 'package:Seedfund/views/investor-views/investor_discover.dart';
+import 'package:Seedfund/views/investor-views/investor_home.dart';
+import 'package:Seedfund/views/investor-views/investor_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class InvestorPageRouting extends StatefulWidget {
   final String? uid;
@@ -13,57 +18,76 @@ class InvestorPageRouting extends StatefulWidget {
 }
 
 class _InvestorPageRoutingState extends State<InvestorPageRouting> {
+  int _selectedIndex = 0;
+  final loggedInUser = FirebaseAuth.instance.currentUser;
+  late final List<Widget> _widgetOptions = <Widget>[
+    InvestorHome(
+      uid: loggedInUser!.uid,
+    ),
+    InvestorDiscover(
+      uid: loggedInUser!.uid,
+    ),
+    InvestorChat(
+      uid: loggedInUser!.uid,
+    ),
+    InvestorProfile(
+      uid: loggedInUser!.uid,
+    ),
+  ];
   User? user = FirebaseAuth.instance.currentUser;
   UserModel userModel = UserModel();
 
   @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("investor_users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      // ignore: unnecessary_this
-      this.userModel = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () => null,
-              ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: SalomonBottomBar(
+          items: [
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.home),
               title: const Text(
-                "Sign out",
+                "Home",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
               ),
-              onTap: () {
-                FirebaseAuth auth = FirebaseAuth.instance;
-                auth.signOut().then((res) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const InvestorRegistration()),
-                      (Route<dynamic> route) => false);
-                });
-              },
-            )
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.category),
+              title: const Text(
+                "Discover",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.message),
+              title: const Text(
+                "Chat",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text(
+                "Profile",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
           ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[Text("${userModel.fullname}")],
-        ),
-      ),
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }),
     );
   }
 }
