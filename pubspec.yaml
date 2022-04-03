@@ -1,4 +1,4 @@
-name: seedfund_capstone
+name: Seedfund
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -29,6 +29,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^1.14.0
+  cloud_firestore: ^3.1.11
+  firebase_storage: ^10.2.10
+  firebase_auth: ^3.3.12
+  salomon_bottom_bar: ^3.3.0
+  share_plus: ^4.0.3
+  flutter_local_notifications: ^9.4.0
+  firebase_database: ^9.0.9
+  splashscreen:
+    git:
+      url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
+      ref: master
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -73,10 +85,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: GT-Walsheim-Regular
+      fonts:
+        - asset: fonts/GT-Walsheim-Regular/GT Walsheim Regular.ttg
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
