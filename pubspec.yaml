@@ -46,6 +46,8 @@ dependencies:
   stream_chat_flutter: ^3.5.1
   cloud_functions: ^3.2.11
   cupertino_list_tile: ^0.2.1
+  flutter_chat_bubble: ^2.0.0
+  outline_search_bar: ^2.3.0
 
 
 dev_dependencies:
