@@ -43,6 +43,10 @@ dependencies:
       url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
       ref: master
   cupertino_icons: ^1.0.2
+  stream_chat_flutter: ^3.5.1
+  cloud_functions: ^3.2.11
+  cupertino_list_tile: ^0.2.1
+
 
 dev_dependencies:
   flutter_test:
