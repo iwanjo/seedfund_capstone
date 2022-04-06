@@ -75,9 +75,6 @@ class _InvestorChatState extends State<InvestorChat> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
@@ -129,40 +126,6 @@ class _InvestorChatState extends State<InvestorChat> {
                 },
               ),
             ),
-            // Container(
-            //   padding:
-            //       const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-            //   height: MediaQuery.of(context).size.height,
-            //   width: MediaQuery.of(context).size.width,
-            //   child: StreamBuilder<QuerySnapshot>(
-            //     stream:
-            //         FirebaseFirestore.instance.collection("chats").snapshots(),
-            //     builder: (BuildContext context,
-            //         AsyncSnapshot<QuerySnapshot> snapshot) {
-            //       if (snapshot.hasError) {
-            //         return Text("There is an error");
-            //       }
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return CircularProgressIndicator();
-            //       }
-            //       if (snapshot.hasData) {
-            //         return ListView(
-            //           children:
-            //               snapshot.data!.docs.map((DocumentSnapshot document) {
-            //             Map<String, dynamic> data =
-            //                 document.data()! as Map<String, dynamic>;
-
-            //             return ListTile(
-            //               title: Text(data['title']),
-            //             );
-            //           }).toList(),
-            //         );
-            //       } else {
-            //         return Text("error");
-            //       }
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),
