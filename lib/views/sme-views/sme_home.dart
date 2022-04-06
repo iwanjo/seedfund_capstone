@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:Seedfund/model/sme_user.dart';
 import 'package:Seedfund/views/sme-auth/login.dart';
 import 'package:Seedfund/views/sme-auth/register.dart';
@@ -60,6 +62,31 @@ class _SMEHomeState extends State<SMEHome> {
         return Text(
           '${data['fullname']}',
           style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        );
+      } else {
+        throw Error;
+      }
+    },
+  );
+
+  final businessName = FutureBuilder<DocumentSnapshot>(
+    future: FirebaseFirestore.instance
+        .collection("sme_users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get(),
+    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      if (snapshot.hasError) {
+        return const Text("sth went wrong");
+      }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        return Text(
+          '${data['companyname']}',
+          style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
         );
       } else {
         throw Error;
@@ -194,8 +221,35 @@ class _SMEHomeState extends State<SMEHome> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[],
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Welcome to your SME Account ",
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              businessName,
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                "You currently have 0 active Funding Projects",
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ),
       ),
     );

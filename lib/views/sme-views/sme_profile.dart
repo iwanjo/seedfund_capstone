@@ -155,7 +155,7 @@ class _SMEProfileState extends State<SMEProfile> {
                 height: 20,
               ),
               Center(
-                child: Text("You haven't invested in any SME's yet"),
+                child: Text("You haven't created any funding projects"),
               ),
             ],
           ),
