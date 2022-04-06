@@ -219,7 +219,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                                         vertical: 6.0,
                                       ),
                                       child: (Text(
-                                        "1.21/2 ETH Collected",
+                                        "30,000/400,000 KSH Collected",
                                         style: TextStyle(fontSize: 12.0),
                                       )),
                                     ),
@@ -322,7 +322,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                                         vertical: 6.0,
                                       ),
                                       child: (Text(
-                                        "0.45/2 ETH Collected",
+                                        "70,000/450,000 KSH Collected",
                                         style: TextStyle(fontSize: 12.0),
                                       )),
                                     ),
@@ -424,7 +424,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                                         vertical: 6.0,
                                       ),
                                       child: (Text(
-                                        "1/2 ETH Collected",
+                                        "10,000/200,000 KSH Collected",
                                         style: TextStyle(fontSize: 12.0),
                                       )),
                                     ),
@@ -527,7 +527,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                                         vertical: 6.0,
                                       ),
                                       child: (Text(
-                                        "1.21/2 ETH Collected",
+                                        "100,000/200,000 KSH Collected",
                                         style: TextStyle(fontSize: 12.0),
                                       )),
                                     ),

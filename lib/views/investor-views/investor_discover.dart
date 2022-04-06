@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outline_search_bar/outline_search_bar.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class InvestorDiscover extends StatefulWidget {
   final String? uid;
@@ -15,7 +16,8 @@ class InvestorDiscover extends StatefulWidget {
   State<InvestorDiscover> createState() => _InvestorDiscoverState();
 }
 
-class _InvestorDiscoverState extends State<InvestorDiscover> {
+class _InvestorDiscoverState extends State<InvestorDiscover>
+    with TickerProviderStateMixin {
   var currentUser = FirebaseAuth.instance.currentUser;
   Future getUser() async {
     var currentUser = await FirebaseAuth.instance.currentUser;
@@ -29,6 +31,8 @@ class _InvestorDiscoverState extends State<InvestorDiscover> {
 
   @override
   Widget build(BuildContext context) {
+    TabController _tabBarController = TabController(length: 8, vsync: this);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -74,7 +78,75 @@ class _InvestorDiscoverState extends State<InvestorDiscover> {
               Text(
                 "Discover SMEs in numerous business categories",
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              )
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 35.0,
+                child: TabBar(
+                  controller: _tabBarController,
+                  isScrollable: true,
+                  labelColor: Colors.white,
+                  // labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  // unselectedLabelStyle: TextStyle(
+                  //   fontWeight: FontWeight.normal,
+                  // ),
+                  unselectedLabelColor: Colors.grey,
+                  indicator: RectangularIndicator(
+                    color: Color(0xFF00B1FF),
+                    topLeftRadius: 100,
+                    topRightRadius: 100,
+                    bottomLeftRadius: 100,
+                    bottomRightRadius: 100,
+                    paintingStyle: PaintingStyle.fill,
+                  ),
+                  // ignore: prefer_const_literals_to_create_immutables
+                  tabs: [
+                    Tab(
+                      text: "All",
+                    ),
+                    Tab(
+                      text: "Agriculture",
+                    ),
+                    Tab(
+                      text: "Energy",
+                    ),
+                    Tab(
+                      text: "Entertainment",
+                    ),
+                    Tab(
+                      text: "Finance",
+                    ),
+                    Tab(
+                      text: "Technology",
+                    ),
+                    Tab(
+                      text: "Tourism",
+                    ),
+                    Tab(
+                      text: "Transport",
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                child: TabBarView(
+                  controller: _tabBarController,
+                  children: [
+                    allBusinessView(),
+                    Text("Second Category"),
+                    Text("Third Category"),
+                    Text("Fourth Category"),
+                    allBusinessView(),
+                    allBusinessView(),
+                    allBusinessView(),
+                    allBusinessView(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -92,7 +164,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover> {
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return const Text("sth went wrong");
+                    return const Text("Sth went wrong");
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
@@ -187,6 +259,200 @@ class _InvestorDiscoverState extends State<InvestorDiscover> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  allBusinessView() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+      child: Column(
+        children: <Widget>[
+          Card(
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            child: InkWell(
+              onTap: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    // alignment: Alignment.bottomLeft,
+                    children: <Widget>[
+                      Ink.image(
+                        height: 160,
+                        image: AssetImage("assets/discover-kenya.png"),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 8.0,
+                            ),
+                            child: Text(
+                              "Discover Kenya",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
+                        ),
+                        child: Text(
+                            "Discover Kenya allows creative agencies and photographers to share visual content of Kenya and create communities"),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: <Widget>[
+                          const SizedBox(width: 10),
+                          Icon(Icons.monetization_on),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "100,000/200,000 KSH Collected",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.people),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "844 Investors",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            child: InkWell(
+              onTap: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    // alignment: Alignment.bottomLeft,
+                    children: <Widget>[
+                      Ink.image(
+                        height: 160,
+                        image: AssetImage("assets/recycling.jpeg"),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 8.0,
+                            ),
+                            child: Text(
+                              "Circular Venture",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
+                        ),
+                        child: Text(
+                            "We recycle plastic bottles and turn them into quality shirts and other clothing materials."),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: <Widget>[
+                          const SizedBox(width: 10),
+                          Icon(Icons.monetization_on),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "300,000/500,000 KSH Collected",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.people),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "554 Investors",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

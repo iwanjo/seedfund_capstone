@@ -48,6 +48,7 @@ dependencies:
   cupertino_list_tile: ^0.2.1
   flutter_chat_bubble: ^2.0.0
   outline_search_bar: ^2.3.0
+  tab_indicator_styler: ^2.0.0
 
 
 dev_dependencies:
