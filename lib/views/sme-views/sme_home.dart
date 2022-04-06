@@ -42,10 +42,52 @@ class _SMEHomeState extends State<SMEHome> {
 
   FirebaseAuth authUser = FirebaseAuth.instance;
 
+  final currentUserName = FutureBuilder<DocumentSnapshot>(
+    future: FirebaseFirestore.instance
+        .collection("sme_users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get(),
+    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      if (snapshot.hasError) {
+        return const Text("Something went wrong");
+      }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        return Text(
+          '${data['fullname']}',
+          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        );
+      } else {
+        throw Error;
+      }
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Image.asset(
+          "assets/seedfund-logomark.png",
+          fit: BoxFit.contain,
+          height: 28,
+          width: 28,
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.more_vert_rounded),
+              tooltip: 'See more',
+              onPressed: () {}),
+        ],
+      ),
       drawer: Drawer(
         backgroundColor: const Color(0xFFFFFFFF),
         child: ListView(
@@ -153,11 +195,7 @@ class _SMEHomeState extends State<SMEHome> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-            Text("${userModel.fullname}"),
-            Text("${userModel.companyname}"),
-            Text("${userModel.email}"),
-          ],
+          children: <Widget>[],
         ),
       ),
     );
