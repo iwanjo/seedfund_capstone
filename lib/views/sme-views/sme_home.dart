@@ -3,6 +3,7 @@
 import 'package:Seedfund/model/sme_user.dart';
 import 'package:Seedfund/views/sme-auth/login.dart';
 import 'package:Seedfund/views/sme-auth/register.dart';
+import 'package:Seedfund/views/sme-views/create_funding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,14 @@ class _SMEHomeState extends State<SMEHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => CreateFundingProject()),
+            ),
+          );
+        },
         backgroundColor: Color(0xFF00B1FF),
         splashColor: Color(0xFF2AB271),
         child: Icon(Icons.add),
