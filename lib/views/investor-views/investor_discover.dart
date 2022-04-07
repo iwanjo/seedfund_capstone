@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable, sized_box_for_whitespace
 
 import 'package:Seedfund/views/investor-auth/investor_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

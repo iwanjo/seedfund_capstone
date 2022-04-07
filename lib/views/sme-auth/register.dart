@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, unused_import
+
 import 'package:Seedfund/model/sme_user.dart';
 import 'package:Seedfund/model/user_model.dart';
 import 'package:Seedfund/sme_routing.dart';
@@ -5,7 +7,6 @@ import 'package:Seedfund/views/sme-auth/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Seedfund/investor_routing.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SMERegister extends StatefulWidget {

@@ -1,10 +1,8 @@
 import 'package:Seedfund/model/user_model.dart';
-import 'package:Seedfund/views/investor-auth/investor_registration.dart';
 import 'package:Seedfund/views/investor-views/investor_chat.dart';
 import 'package:Seedfund/views/investor-views/investor_discover.dart';
 import 'package:Seedfund/views/investor-views/investor_home.dart';
 import 'package:Seedfund/views/investor-views/investor_profile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';

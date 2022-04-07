@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
 
 import 'package:Seedfund/model/sme_user.dart';
 import 'package:Seedfund/views/sme-auth/login.dart';
-import 'package:Seedfund/views/sme-auth/register.dart';
 import 'package:Seedfund/views/sme-views/create_funding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,7 +102,9 @@ class _SMEHomeState extends State<SMEHome> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: ((context) => CreateFundingProject()),
+              builder: ((context) => CreateFundingProject(
+                    uid: user!.uid,
+                  )),
             ),
           );
         },

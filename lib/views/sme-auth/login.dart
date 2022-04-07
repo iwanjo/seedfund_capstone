@@ -1,9 +1,7 @@
 import 'package:Seedfund/sme_routing.dart';
 import 'package:Seedfund/views/sme-auth/register.dart';
-import 'package:Seedfund/views/sme-views/sme_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Seedfund/investor_routing.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SMELogin extends StatefulWidget {

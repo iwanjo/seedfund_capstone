@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
 // ignore for file: prefer_const_literals_to_create_immutables
 
 import 'package:Seedfund/views/investor-auth/investor_login.dart';
