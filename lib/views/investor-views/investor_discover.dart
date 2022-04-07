@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable, sized_box_for_whitespace
 
+import 'package:Seedfund/model/sme_project_info.dart';
+import 'package:Seedfund/model/sme_view_model.dart';
 import 'package:Seedfund/views/investor-auth/investor_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +34,115 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
   @override
   Widget build(BuildContext context) {
     TabController _tabBarController = TabController(length: 8, vsync: this);
+
+    smeCard(SMEView attribute) {
+      return Center(
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SMEProjectInfo(
+                            coverImg: attribute.logo,
+                            projectTitle: attribute.projectName,
+                            projectDescription: attribute.projectDescription,
+                            amount: attribute.amount,
+                            deadline: attribute.deadline,
+                          )));
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Image.network(
+                      attribute.logo,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    // Ink.image(
+                    //   image: attribute.logo,
+                    //   fit: BoxFit.fitWidth,
+                    // ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                            vertical: 8.0,
+                          ),
+                          child: Text(
+                            attribute.projectName,
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
+                      child: Text(
+                        attribute.projectDescription,
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.monetization_on),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.0,
+                            vertical: 6.0,
+                          ),
+                          child: (Text(
+                            attribute.amount,
+                            style: TextStyle(fontSize: 12.0),
+                          )),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.calendar_today),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.0,
+                            vertical: 6.0,
+                          ),
+                          child: (Text(
+                            attribute.deadline,
+                            style: TextStyle(fontSize: 12.0),
+                          )),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -137,7 +248,42 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                   controller: _tabBarController,
                   children: [
                     allBusinessView(),
-                    Text("Second Category"),
+                    FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection("fundingProjects")
+                            .get(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                                snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> smeMap =
+                                    snapshot.data!.docs[index].data();
+
+                                SMEView attribute = SMEView(
+                                    smeMap['logoUrl'],
+                                    smeMap['projectName'],
+                                    smeMap['projectDescription'],
+                                    smeMap['amount'],
+                                    smeMap['deadline']);
+                                return smeCard(attribute);
+                              },
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          if (snapshot.hasError) {
+                            return Text("Error");
+                          }
+                          throw Error();
+                        }),
                     Text("Third Category"),
                     Text("Fourth Category"),
                     allBusinessView(),

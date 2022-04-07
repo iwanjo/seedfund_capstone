@@ -54,7 +54,7 @@ class SeedfundSplashScreen extends StatelessWidget {
       loadingTextPadding: const EdgeInsets.all(0),
       useLoader: true,
       navigateAfterSeconds:
-          result != null ? const SMEPageRouting() : const OnboardingOne(),
+          result != null ? const InvestorPageRouting() : const OnboardingOne(),
       seconds: 4,
     );
   }
