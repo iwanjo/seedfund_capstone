@@ -130,6 +130,8 @@ class _CreateFundingProjectState extends State<CreateFundingProject> {
   }
 
   runAll() {
+    Fluttertoast.showToast(msg: "Funding Project Uploaded Successfully");
+
     uploadLogoImageToFirebase(context);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => SuccessFundingProject()));
@@ -219,7 +221,6 @@ class _CreateFundingProjectState extends State<CreateFundingProject> {
                     enabledBorder: InputBorder.none,
                   ),
                   controller: descriptionController,
-                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.name,
                   validator: (String? stringValue) {
                     if (stringValue != null && stringValue.isEmpty) {
@@ -236,7 +237,7 @@ class _CreateFundingProjectState extends State<CreateFundingProject> {
                 child: TextFormField(
                   decoration: const InputDecoration(
                     filled: true,
-                    labelText: "How much do you want to raise?",
+                    labelText: "How much do you want to raise in KSH?",
                     labelStyle: TextStyle(fontSize: 12.0),
                     fillColor: Color(0xFFF0F0F0),
                     // border: InputBorder.none,
