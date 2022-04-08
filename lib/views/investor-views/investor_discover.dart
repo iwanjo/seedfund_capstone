@@ -242,7 +242,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height,
+                height: 1500,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                 child: TabBarView(
                   controller: _tabBarController,
@@ -258,7 +258,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: BouncingScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, index) {
