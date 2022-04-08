@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
+// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, unnecessary_this
 // ignore for file: prefer_const_literals_to_create_immutables
 import 'package:Seedfund/model/sme_project_info.dart';
 import 'package:flutter/material.dart';

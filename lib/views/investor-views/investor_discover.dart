@@ -112,7 +112,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                             vertical: 6.0,
                           ),
                           child: (Text(
-                            attribute.amount,
+                            "KSH " + attribute.amount,
                             style: TextStyle(fontSize: 12.0),
                           )),
                         ),
@@ -126,7 +126,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                             vertical: 6.0,
                           ),
                           child: (Text(
-                            attribute.deadline,
+                            attribute.deadline + " Days",
                             style: TextStyle(fontSize: 12.0),
                           )),
                         ),
@@ -279,6 +279,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                               ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           }
+
                           if (snapshot.hasError) {
                             return Text("Error");
                           }

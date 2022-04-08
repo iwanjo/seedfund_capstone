@@ -50,6 +50,7 @@ dependencies:
   outline_search_bar: ^2.3.0
   tab_indicator_styler: ^2.0.0
   image_picker: ^0.8.5
+  flutter_credit_card: ^3.0.1
 
 
 dev_dependencies:

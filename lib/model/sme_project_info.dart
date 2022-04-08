@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_this
+// ignore_for_file: prefer_const_constructors, unnecessary_this, prefer_typing_uninitialized_variables
 
+import 'package:Seedfund/views/invest_in_sme.dart';
 import 'package:flutter/material.dart';
 
 class SMEProjectInfo extends StatefulWidget {
@@ -31,8 +32,12 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
         elevation: 0,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text("Invest in " + projectName),
+        title: Text(
+          "Invest in " + projectName,
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
+        // ignore: prefer_const_literals_to_create_immutables
         actions: [
           Icon(Icons.share),
         ],
@@ -45,16 +50,19 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
           child: ListView(
             physics: BouncingScrollPhysics(),
             children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  this.widget.coverImg,
-                  SizedBox(
-                    width: 20,
-                  ),
-                  this.widget.projectTitle,
-                ],
+              Image.network(
+                this.widget.coverImg,
+                fit: BoxFit.fitWidth,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                this.widget.projectTitle,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -67,9 +75,17 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 20,
               ),
-              this.widget.projectDescription,
+              Text(
+                this.widget.projectDescription,
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 "Funding Goal Amount",
                 style: TextStyle(
@@ -78,9 +94,17 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 20,
               ),
-              this.widget.amount,
+              Text(
+                "KSH " + this.widget.amount,
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 "Funding Project Deadline",
                 style: TextStyle(
@@ -89,14 +113,29 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 20,
               ),
-              this.widget.deadline,
+              Text(
+                this.widget.deadline + " Days",
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
               SizedBox(
-                height: 16,
+                height: 20,
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InvestInSMEProject(
+                        projectTitle: projectName,
+                        amount: this.widget.amount,
+                      ),
+                    ),
+                  );
+                },
                 color: const Color(0xFF2AB271),
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -104,8 +143,8 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 12.0, horizontal: 20.0),
                 child: const Text(
-                  "Invest",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+                  "Invest in Project",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                 ),
               ),
             ],
