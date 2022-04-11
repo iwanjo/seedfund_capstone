@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this
 
+import 'package:Seedfund/views/investor-views/success_investment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class InvestInSMEProject extends StatefulWidget {
   final projectTitle;
@@ -29,7 +31,7 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
         .get(),
     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
       if (snapshot.hasError) {
-        return const Text("sth went wrong");
+        return const Text("Oops, something went wrong");
       }
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const CircularProgressIndicator();
@@ -295,15 +297,7 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
               ),
               MaterialButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => InvestInSMEProject(
-                        projectTitle: projectName,
-                        amount: this.widget.amount,
-                      ),
-                    ),
-                  );
+                  sendInvestmentToFirebaseFirestore();
                 },
                 color: const Color(0xFF2AB271),
                 textColor: Colors.white,
@@ -318,6 +312,28 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  final _auth = FirebaseAuth.instance;
+
+  sendInvestmentToFirebaseFirestore() {
+    User? user = _auth.currentUser;
+
+    FirebaseFirestore.instance.collection("investments").add({
+      "investmentAmount": investmentAmountController.text,
+      "company": this.widget.projectTitle,
+      "user": user!.uid,
+    });
+    Fluttertoast.showToast(msg: "Completed Successfully");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SuccessfulInvestment(
+          projectTitle: widget.projectTitle,
+          amount: investmentAmountController.text,
         ),
       ),
     );

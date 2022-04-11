@@ -285,8 +285,8 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                           }
                           throw Error();
                         }),
-                    Text("Third Category"),
-                    Text("Fourth Category"),
+                    allBusinessView(),
+                    allBusinessView(),
                     allBusinessView(),
                     allBusinessView(),
                     allBusinessView(),
