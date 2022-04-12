@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../investor_routing.dart';
+
 class InvestorProfile extends StatefulWidget {
   final String? uid;
   const InvestorProfile({Key? key, this.uid}) : super(key: key);
@@ -15,6 +17,11 @@ class InvestorProfile extends StatefulWidget {
 }
 
 class _InvestorProfileState extends State<InvestorProfile> {
+  CollectionReference investments =
+      FirebaseFirestore.instance.collection("investments");
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  User? user = FirebaseAuth.instance.currentUser;
+
   var currentUser = FirebaseAuth.instance.currentUser;
   Future getUser() async {
     var currentUser = await FirebaseAuth.instance.currentUser;
@@ -114,16 +121,113 @@ class _InvestorProfileState extends State<InvestorProfile> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 24,
               ),
               Center(
                 child: currentUserName,
               ),
               SizedBox(
-                height: 20,
+                height: 28,
               ),
-              Center(
-                child: Text("You haven't invested in any SME's yet"),
+              StreamBuilder<QuerySnapshot>(
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    throw Error().toString();
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                        child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Text("You haven't invested in any SMEs yet."),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => InvestorPageRouting(
+                                          uid: user!.uid,
+                                        )));
+                          },
+                          color: const Color(0xFF2AB271),
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 20.0),
+                          child: const Text(
+                            "Invest Now",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15.0),
+                          ),
+                        ),
+                      ],
+                    ));
+                  }
+
+                  if (snapshot.hasData) {
+                    var data;
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 600,
+                            child: ListView(
+                              children: snapshot.data!.docs.map(
+                                (DocumentSnapshot document) {
+                                  data = document.data()!;
+
+                                  return ListTile(
+                                    onTap: () {},
+                                    leading: CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: Color(0xFFE6F9F0),
+                                      child: Icon(
+                                        Icons.library_books,
+                                        color: Color(0xFF2AB271),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      data['company'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "KSH " + data['investmentAmount'],
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+
+                                    // child: Text(data['company']),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Text("data");
+                  }
+                },
+                stream: FirebaseFirestore.instance
+                    .collection("investments")
+                    .doc(currentUserId)
+                    .collection("user-investments")
+                    .snapshots(),
               ),
             ],
           ),

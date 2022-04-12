@@ -478,21 +478,21 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                               vertical: 6.0,
                             ),
                             child: (Text(
-                              "100,000/200,000 KSH Collected",
+                              "KSH 100,000",
                               style: TextStyle(fontSize: 12.0),
                             )),
                           ),
                           const SizedBox(
                             width: 10,
                           ),
-                          Icon(Icons.people),
+                          Icon(Icons.calendar_today),
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 5.0,
                               vertical: 6.0,
                             ),
                             child: (Text(
-                              "844 Investors",
+                              "20 Days",
                               style: TextStyle(fontSize: 12.0),
                             )),
                           ),

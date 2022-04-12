@@ -2,6 +2,7 @@
 
 import 'package:Seedfund/views/invest_in_sme.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SMEProjectInfo extends StatefulWidget {
   final coverImg;
@@ -39,7 +40,16 @@ class _SMEProjectInfoState extends State<SMEProjectInfo> {
         centerTitle: true,
         // ignore: prefer_const_literals_to_create_immutables
         actions: [
-          Icon(Icons.share),
+          IconButton(
+              onPressed: () {
+                Share.share(
+                    "Here is an up and coming SME soon to become Kenya's next unicorm. It is " +
+                        this.widget.projectTitle +
+                        ". They are seeking a funding amount of KSH " +
+                        this.widget.amount +
+                        ". The great thing about Seedfund is that it promotes equity crowdfunding, meaning, the money we put in will grant us equity in the company. ");
+              },
+              icon: Icon(Icons.share)),
         ],
       ),
       body: SingleChildScrollView(

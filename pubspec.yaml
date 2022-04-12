@@ -51,6 +51,7 @@ dependencies:
   tab_indicator_styler: ^2.0.0
   image_picker: ^0.8.5
   flutter_credit_card: ^3.0.1
+  intl: ^0.17.0
 
 
 dev_dependencies:

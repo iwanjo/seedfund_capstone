@@ -23,6 +23,11 @@ class InvestInSMEProject extends StatefulWidget {
 }
 
 class _InvestInSMEProjectState extends State<InvestInSMEProject> {
+  CollectionReference investments =
+      FirebaseFirestore.instance.collection("investments");
+  var investDocId;
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
   TextEditingController investmentAmountController = TextEditingController();
   final currentUserName = FutureBuilder<DocumentSnapshot>(
     future: FirebaseFirestore.instance
@@ -321,11 +326,10 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
 
   sendInvestmentToFirebaseFirestore() {
     User? user = _auth.currentUser;
-
-    FirebaseFirestore.instance.collection("investments").add({
+    investments.doc(currentUserId).collection("user-investments").add({
       "investmentAmount": investmentAmountController.text,
       "company": this.widget.projectTitle,
-      "user": user!.uid,
+      "uid": currentUserId,
     });
     Fluttertoast.showToast(msg: "Completed Successfully");
     Navigator.pushReplacement(

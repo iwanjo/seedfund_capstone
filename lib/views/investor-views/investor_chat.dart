@@ -25,8 +25,8 @@ class _InvestorChatState extends State<InvestorChat> {
       context,
       MaterialPageRoute(
         builder: ((context) => ChatDetails(
-              friendName: name,
-              friendUid: uid,
+              receiverName: name,
+              otherUserUid: uid,
             )),
       ),
     );

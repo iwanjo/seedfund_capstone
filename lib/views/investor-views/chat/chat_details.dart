@@ -9,32 +9,59 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ChatDetails extends StatefulWidget {
-  final friendUid;
-  final friendName;
+  final otherUserUid;
+  final receiverName;
 
-  ChatDetails({Key? key, this.friendUid, this.friendName}) : super(key: key);
+  ChatDetails({Key? key, this.otherUserUid, this.receiverName})
+      : super(key: key);
 
   @override
-  _ChatDetailsState createState() => _ChatDetailsState(friendUid, friendName);
+  _ChatDetailsState createState() =>
+      _ChatDetailsState(otherUserUid, receiverName);
 }
 
 class _ChatDetailsState extends State<ChatDetails> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
-  final friendUid;
-  final friendName;
+  final otherUserUid;
+  final receiverName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   var chatDocId;
-  var _textController = TextEditingController();
-  _ChatDetailsState(this.friendUid, this.friendName);
+  var messageController = TextEditingController();
+  _ChatDetailsState(this.otherUserUid, this.receiverName);
   @override
   void initState() {
     super.initState();
-    checkUser();
+    getUser();
   }
 
-  void checkUser() async {
+  final currentUserName = FutureBuilder<DocumentSnapshot>(
+    future: FirebaseFirestore.instance
+        .collection("investor_users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get(),
+    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      if (snapshot.hasError) {
+        return const Text("sth went wrong");
+      }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        return Text(
+          '${data['fullname']}',
+          style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        );
+      } else {
+        throw Error;
+      }
+    },
+  );
+
+  void getUser() async {
     await chats
-        .where('users', isEqualTo: {friendUid: null, currentUserId: null})
+        .where('users', isEqualTo: {otherUserUid: null, currentUserId: null})
         .limit(1)
         .get()
         .then(
@@ -45,10 +72,10 @@ class _ChatDetailsState extends State<ChatDetails> {
               });
             } else {
               await chats.add({
-                'users': {currentUserId: null, friendUid: null},
+                'users': {currentUserId: null, otherUserUid: null},
                 'names': {
                   currentUserId: FirebaseAuth.instance.currentUser?.displayName,
-                  friendUid: friendName
+                  otherUserUid: receiverName
                 }
               }).then((value) => {chatDocId = value});
             }
@@ -59,24 +86,26 @@ class _ChatDetailsState extends State<ChatDetails> {
         });
   }
 
-  void sendMessage(String msg) {
-    if (msg == '') return;
+  void sendMessage(String userMessage) {
+    final messageTime = DateTime.now();
+
+    if (userMessage == '') return;
     chats.doc(chatDocId).collection('messages').add({
-      'createdOn': FieldValue.serverTimestamp(),
+      'messageSent': messageTime,
       'uid': currentUserId,
-      'friendName': friendName,
-      'msg': msg
+      'receiverName': receiverName,
+      'userMessage': userMessage
     }).then((value) {
-      _textController.text = '';
+      messageController.text = '';
     });
   }
 
-  bool isSender(String friend) {
-    return friend == currentUserId;
+  bool isSender(String receiver) {
+    return receiver == currentUserId;
   }
 
-  Alignment getAlignment(friend) {
-    if (friend == currentUserId) {
+  Alignment getAlignment(receiver) {
+    if (receiver == currentUserId) {
       return Alignment.topRight;
     }
     return Alignment.topLeft;
@@ -84,11 +113,12 @@ class _ChatDetailsState extends State<ChatDetails> {
 
   @override
   Widget build(BuildContext context) {
+    var dt = DateTime.now();
     return StreamBuilder<QuerySnapshot>(
       stream: chats
           .doc(chatDocId)
           .collection('messages')
-          .orderBy('createdOn', descending: true)
+          .orderBy('messageSent', descending: true)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -111,7 +141,7 @@ class _ChatDetailsState extends State<ChatDetails> {
               backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black),
               title: Text(
-                friendName,
+                receiverName,
                 style: TextStyle(color: Colors.black, fontSize: 16.0),
               ),
               centerTitle: true,
@@ -153,7 +183,7 @@ class _ChatDetailsState extends State<ChatDetails> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text(data['msg'],
+                                        Text(data['userMessage'],
                                             style: TextStyle(
                                                 color: isSender(
                                                         data['uid'].toString())
@@ -167,18 +197,19 @@ class _ChatDetailsState extends State<ChatDetails> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          data['createdOn'] == null
+                                          data['messageSent'] == null
                                               ? DateTime.now().toString()
-                                              : data['createdOn']
+                                              : data['messageSent']
                                                   .toDate()
-                                                  .toString(),
+                                                  .toString()
+                                                  .substring(11, 16),
                                           style: TextStyle(
                                               fontSize: 10,
                                               color: isSender(
                                                       data['uid'].toString())
                                                   ? Colors.white
                                                   : Colors.white),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -199,7 +230,7 @@ class _ChatDetailsState extends State<ChatDetails> {
                               left: 16.0, top: 24, bottom: 16),
                           child: TextField(
                             keyboardType: TextInputType.text,
-                            controller: _textController,
+                            controller: messageController,
                             decoration: const InputDecoration(
                               filled: true,
                               hintText: "Enter your message",
@@ -212,7 +243,7 @@ class _ChatDetailsState extends State<ChatDetails> {
                       ),
                       MaterialButton(
                           child: Icon(Icons.send),
-                          onPressed: () => sendMessage(_textController.text))
+                          onPressed: () => sendMessage(messageController.text))
                     ],
                   )
                 ],
