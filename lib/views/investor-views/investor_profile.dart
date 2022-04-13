@@ -192,7 +192,7 @@ class _InvestorProfileState extends State<InvestorProfile> {
                                   return ListTile(
                                     onTap: () {},
                                     leading: CircleAvatar(
-                                      radius: 30,
+                                      radius: 40,
                                       backgroundColor: Color(0xFFE6F9F0),
                                       child: Icon(
                                         Icons.library_books,
@@ -203,12 +203,12 @@ class _InvestorProfileState extends State<InvestorProfile> {
                                       data['company'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
+                                        fontSize: 16.0,
                                       ),
                                     ),
                                     subtitle: Text(
                                       "KSH " + data['investmentAmount'],
-                                      style: TextStyle(fontSize: 16.0),
+                                      style: TextStyle(fontSize: 14.0),
                                     ),
                                   );
                                 },

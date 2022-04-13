@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
 
+import 'package:Seedfund/sme_routing.dart';
 import 'package:Seedfund/views/investor-auth/investor_login.dart';
+import 'package:Seedfund/views/sme-views/sme_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,8 @@ class _SMEProfileState extends State<SMEProfile> {
         .collection("sme_users")
         .doc(currentUser!.uid);
   }
+
+  User? user = FirebaseAuth.instance.currentUser;
 
   FirebaseAuth authUser = FirebaseAuth.instance;
 
@@ -154,121 +158,170 @@ class _SMEProfileState extends State<SMEProfile> {
               SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Text("You haven't created any funding projects"),
+
+              FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection("fundingProjects")
+                    .get(),
+                builder: (context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    var data;
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 600,
+                            child: ListView(
+                              children: snapshot.data!.docs.map(
+                                (DocumentSnapshot document) {
+                                  data = document.data()!;
+
+                                  return ListTile(
+                                    onTap: () {},
+                                    leading: CircleAvatar(
+                                      radius: 40,
+                                      backgroundColor: Color(0xFFE6F9F0),
+                                      child: Icon(
+                                        Icons.library_books,
+                                        color: Color(0xFF2AB271),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      data['projectName'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      "KSH " + data['amount'],
+                                      style: TextStyle(fontSize: 14.0),
+                                    ),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  if (snapshot.hasError) {
+                    throw Error().toString();
+                  } else {
+                    return Text("data");
+                  }
+                },
               ),
+
+              // FutureBuilder(
+              //   future: FirebaseFirestore.instance
+              //       .collection("fundingProjects")
+              //       .get(),
+              //   builder: (context,
+              //       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+              //           snapshot) {
+              //     if (snapshot.hasError) {
+              //       return Text("Sth went wrong");
+              //     }
+
+              // if (snapshot.data!.docs.isEmpty) {
+              //   return Center(
+              //     child: Column(
+              //       // ignore: prefer_const_literals_to_create_immutables
+              //       children: [
+              //         Text(
+              //           "You haven't created any funding projects yet",
+              //         ),
+              //         SizedBox(
+              //           height: 24,
+              //         ),
+              //         MaterialButton(
+              //           onPressed: () {
+              //             Navigator.push(
+              //                 context,
+              //                 MaterialPageRoute(
+              //                     builder: (context) => SMEPageRouting(
+              //                           uid: user!.uid,
+              //                         )));
+              //           },
+              //           color: const Color(0xFF2AB271),
+              //           textColor: Colors.white,
+              //           shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(10)),
+              //           padding: const EdgeInsets.symmetric(
+              //               vertical: 12.0, horizontal: 20.0),
+              //           child: const Text(
+              //             "Create Funding Project",
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.bold, fontSize: 15.0),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   );
+              // }
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return CircularProgressIndicator();
+              //     }
+
+              //     if (snapshot.hasData) {
+              //       var data;
+              //       return SingleChildScrollView(
+              //         child: Column(
+              //           children: [
+              //             SizedBox(
+              //               height: 600,
+              //               child: ListView(
+              //                 children: snapshot.data!.docs.map(
+              //                   (DocumentSnapshot document) {
+              //                     data = document.data()!;
+
+              //                     return ListTile(
+              //                       onTap: () {},
+              //                       leading: CircleAvatar(
+              //                         radius: 40,
+              //                         backgroundColor: Color(0xFFE6F9F0),
+              //                         child: Icon(
+              //                           Icons.library_books,
+              //                           color: Color(0xFF2AB271),
+              //                         ),
+              //                       ),
+              //                       title: Text(
+              //                         data['projectName'],
+              //                         style: TextStyle(
+              //                           fontWeight: FontWeight.bold,
+              //                           fontSize: 16.0,
+              //                         ),
+              //                       ),
+              //                       subtitle: Text(
+              //                         "KSH " + data['amount'],
+              //                         style: TextStyle(fontSize: 14.0),
+              //                       ),
+              //                     );
+              //                   },
+              //                 ).toList(),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     }
+              //     throw Error().toString();
+              //   },
+              // ),
             ],
           ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection("sme_users")
-                    .doc(currentUser!.uid)
-                    .get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text("sth went wrong");
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Text('${data['fullname']}');
-                  } else {
-                    throw Error;
-                  }
-                },
-              ),
-              accountEmail: FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection("sme_users")
-                    .doc(currentUser!.uid)
-                    .get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text("Oops, something went wrong");
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Text('${data['companyname']}');
-                  } else {
-                    throw Error;
-                  }
-                },
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: const Color(0xFF2AB271),
-                child: FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection("sme_users")
-                      .doc(currentUser!.uid)
-                      .get(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text("Something went wrong");
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      Map<String, dynamic> data =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                      final str = '${data['fullname']}';
-                      return Text(
-                        str.split(" ").map((l) => l[0]).take(2).join(),
-                      );
-                    } else {
-                      throw Error;
-                    }
-                  },
-                ),
-              ),
-            ),
-            ListTile(
-              leading: IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () => authUser.signOut().then((res) {
-                  Fluttertoast.showToast(msg: "Signed out successfully");
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const InvestorLogin()),
-                      (Route<dynamic> route) => false);
-                }),
-              ),
-              title: const Text(
-                "Sign out",
-              ),
-              onTap: () {
-                FirebaseAuth auth = FirebaseAuth.instance;
-                auth.signOut().then((res) {
-                  Fluttertoast.showToast(msg: "Signed out successfully");
-
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const InvestorLogin()),
-                      (Route<dynamic> route) => false);
-                });
-              },
-            ),
-          ],
-        ),
+      drawer: SMEDrawer(
+        uid: currentUser!.uid,
       ),
     );
   }

@@ -82,10 +82,6 @@ class _InvestorHomeState extends State<InvestorHome> {
                     attribute.logo,
                     fit: BoxFit.fitWidth,
                   ),
-                  // Ink.image(
-                  //   image: attribute.logo,
-                  //   fit: BoxFit.fitWidth,
-                  // ),
                 ],
               ),
               const SizedBox(height: 8),

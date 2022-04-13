@@ -96,6 +96,7 @@ class _CreateFundingProjectState extends State<CreateFundingProject> {
       'projectDescription': descriptionController.text,
       'amount': amountController.text,
       'deadline': deadlineController.text,
+      'uid': currentUserLoginUser!.uid,
       'logoUrl': imageUrl,
     });
   }

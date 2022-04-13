@@ -65,10 +65,6 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                       attribute.logo,
                       fit: BoxFit.fitWidth,
                     ),
-                    // Ink.image(
-                    //   image: attribute.logo,
-                    //   fit: BoxFit.fitWidth,
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -200,10 +196,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                   controller: _tabBarController,
                   isScrollable: true,
                   labelColor: Colors.white,
-                  // labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  // unselectedLabelStyle: TextStyle(
-                  //   fontWeight: FontWeight.normal,
-                  // ),
+
                   unselectedLabelColor: Colors.grey,
                   indicator: RectangularIndicator(
                     color: Color(0xFF00B1FF),

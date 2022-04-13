@@ -1,5 +1,6 @@
 import 'package:Seedfund/investor_routing.dart';
 import 'package:Seedfund/views/investor-auth/investor_registration.dart';
+import 'package:Seedfund/views/sme-auth/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -175,6 +176,26 @@ class _InvestorLoginState extends State<InvestorLogin> {
                                   vertical: 12.0, horizontal: 20.0),
                               child: const Text(
                                 "Don't have an account? Register here",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0),
+                              ),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SMELogin()));
+                              },
+                              textColor: const Color(0xFF00B1FF),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 20.0),
+                              child: const Text(
+                                "Continue as an SME",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0),
