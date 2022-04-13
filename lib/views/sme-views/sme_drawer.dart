@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, duplicate_ignore
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,6 +27,7 @@ class _SMEDrawerState extends State<SMEDrawer> {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
+            // ignore: prefer_const_constructors
             decoration: BoxDecoration(color: Color(0xFF2AB271)),
             accountName: FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance

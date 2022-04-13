@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:Seedfund/views/sme-views/sme_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';

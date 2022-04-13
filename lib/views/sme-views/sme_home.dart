@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
 
 import 'package:Seedfund/model/sme_user.dart';
-import 'package:Seedfund/views/sme-auth/login.dart';
 import 'package:Seedfund/views/sme-views/create_funding.dart';
 import 'package:Seedfund/views/sme-views/sme_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class SMEHome extends StatefulWidget {
   final String? uid;
@@ -19,6 +17,7 @@ class SMEHome extends StatefulWidget {
 
 class _SMEHomeState extends State<SMEHome> {
   User? user = FirebaseAuth.instance.currentUser;
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   SMEUserModel userModel = SMEUserModel();
   bool isLoading = false;
@@ -203,75 +202,50 @@ class _SMEHomeState extends State<SMEHome> {
                 SizedBox(
                   height: 20,
                 ),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
-                      .collection("fundingProjects")
-                      .get(),
-                  builder: (context,
-                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                          snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      var data;
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 600,
-                              child: ListView(
-                                children: snapshot.data!.docs.map(
-                                  (DocumentSnapshot document) {
-                                    data = document.data()!;
-
-                                    return ListTile(
-                                      onTap: () {},
-                                      leading: CircleAvatar(
-                                        radius: 40,
-                                        backgroundColor: Color(0xFFE6F9F0),
-                                        child: Icon(
-                                          Icons.library_books,
-                                          color: Color(0xFF2AB271),
-                                        ),
-                                      ),
-                                      title: Text(
-                                        data['projectName'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        "KSH " + data['amount'],
-                                        style: TextStyle(fontSize: 14.0),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 8.0),
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("fundingProjects")
+                        .where("uid", isEqualTo: currentUser!.uid)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Error noted");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (snapshot.hasData) {
+                        return ListView(
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            Map<String, dynamic> data =
+                                document.data()! as Map<String, dynamic>;
+                            return ListTile(
+                              onTap: () {},
+                              leading: CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Color(0xFFE6F9F0),
+                                child: Icon(
+                                  Icons.library_books,
+                                  color: Color(0xFF2AB271),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    if (snapshot.data!.docs.isEmpty) {
-                      return Center(
-                          child: Column(
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          Text("You haven't invested in any SMEs yet."),
-                          SizedBox(
-                            height: 24,
-                          ),
-                        ],
-                      ));
-                    }
-                    if (snapshot.hasError) {
-                      return Text("Error");
-                    }
-                    throw Error();
-                  },
+                              title: Text(data['projectName']),
+                              subtitle: Text("KSH " + data['amount']),
+                            );
+                          }).toList(),
+                        );
+                      } else {
+                        throw Error().toString();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

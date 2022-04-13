@@ -113,7 +113,6 @@ class _ChatDetailsState extends State<ChatDetails> {
 
   @override
   Widget build(BuildContext context) {
-    var dt = DateTime.now();
     return StreamBuilder<QuerySnapshot>(
       stream: chats
           .doc(chatDocId)

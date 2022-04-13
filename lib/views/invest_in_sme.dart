@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, unused_local_variable
 
 import 'package:Seedfund/views/investor-views/success_investment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

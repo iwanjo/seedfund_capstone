@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:Seedfund/views/investor-auth/investor_login.dart';
 import 'package:Seedfund/views/investor-views/chat/chat_details.dart';
 import 'package:Seedfund/views/investor-views/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class InvestorChat extends StatefulWidget {
   final String? uid;

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, unused_local_variable, prefer_adjacent_string_concatenation
 
 import 'package:Seedfund/investor_routing.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable
+// ignore_for_file: prefer_const_constructors, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables
 
-import 'package:Seedfund/views/investor-auth/investor_login.dart';
 import 'package:Seedfund/views/investor-views/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../investor_routing.dart';
 
