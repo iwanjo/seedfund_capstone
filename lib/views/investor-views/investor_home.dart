@@ -178,14 +178,16 @@ class _InvestorHomeState extends State<InvestorHome> {
           ],
         ),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           child: Container(
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-            height: 2000,
+            height: MediaQuery.of(context).size.height * 10,
             width: MediaQuery.of(context).size.width,
             child: ListView(
-              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.symmetric(
