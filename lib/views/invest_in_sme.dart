@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unnecessary_this, unused_local_variable
 
+import 'package:Seedfund/secrets.dart';
 import 'package:Seedfund/views/investor-views/success_investment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/credit_card_form.dart';
+import 'package:flutterwave/flutterwave.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -27,8 +28,10 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
       FirebaseFirestore.instance.collection("investments");
   var investDocId;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-
+  final _formKey = GlobalKey<FormState>();
+  final String currency = FlutterwaveCurrency.RWF;
   TextEditingController investmentAmountController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   final currentUserName = FutureBuilder<DocumentSnapshot>(
     future: FirebaseFirestore.instance
         .collection("investor_users")
@@ -57,14 +60,6 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
       }
     },
   );
-
-  String cardNumber = '';
-  String expiryDate = '';
-  String cardHolderName = '';
-  String cvvCode = '';
-  bool isCvvFocused = false;
-  OutlineInputBorder? border;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +101,37 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
                 "Your transaction will be processed immediately",
                 style: TextStyle(fontSize: 15.0, color: Color(0xFF979797)),
               ),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 0.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      labelText: "Enter phone number",
+                      labelStyle: TextStyle(fontSize: 14.0),
+                      fillColor: Color(0xFFF0F0F0),
+                      enabledBorder: InputBorder.none,
+                    ),
+                    controller: phoneController,
+                    keyboardType: TextInputType.number,
+                    validator: (String? stringValue) {
+                      if (stringValue != null && stringValue.isEmpty) {
+                        return "Your phone number is a required field, please enter it here";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     filled: true,
-                    labelText: "Enter amount in KSH",
+                    labelText: "Enter amount",
                     labelStyle: TextStyle(fontSize: 14.0),
                     fillColor: Color(0xFFF0F0F0),
                     // border: InputBorder.none,
@@ -137,14 +156,14 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
                   Text(
-                    "Total (KSH)",
+                    "Total",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    "KSH " + investmentAmountController.text,
+                    "" + investmentAmountController.text,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -214,7 +233,7 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
                           height: 10,
                         ),
                         Text(
-                          "Your card information is fully encrypted",
+                          "Your information is fully encrypted",
                           style: TextStyle(
                             fontSize: 14,
                             color: Color(0xFF2AB271),
@@ -229,73 +248,9 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
               SizedBox(
                 height: 20,
               ),
-              Text("Pay with Card Below"),
+              Text("Pay with Flutterwave Below"),
               SizedBox(
                 height: 12,
-              ),
-              CreditCardForm(
-                cardNumber: cardNumber,
-                obscureCvv: true,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cvvCode: cvvCode,
-                onCreditCardModelChange: onCreditCardModelChange,
-                themeColor: Colors.blue,
-                formKey: _formKey,
-                cardNumberDecoration: InputDecoration(
-                  fillColor: Color(0xFFF0F0F0),
-                  filled: true,
-                  labelText: 'Number',
-                  hintText: 'XXXX XXXX XXXX XXXX',
-                  hintStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  labelStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  enabledBorder: InputBorder.none,
-                ),
-                expiryDateDecoration: InputDecoration(
-                  fillColor: Color(0xFFF0F0F0),
-                  filled: true,
-                  hintStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  labelStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  focusedBorder: border,
-                  enabledBorder: border,
-                  labelText: 'Expired Date',
-                  hintText: 'XX/XX',
-                ),
-                cvvCodeDecoration: InputDecoration(
-                  fillColor: Color(0xFFF0F0F0),
-                  filled: true,
-                  hintStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  labelStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  focusedBorder: border,
-                  enabledBorder: border,
-                  labelText: 'CVV',
-                  hintText: 'XXX',
-                ),
-                cardHolderDecoration: InputDecoration(
-                  fillColor: Color(0xFFF0F0F0),
-                  filled: true,
-                  hintStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  labelStyle: const TextStyle(
-                      color: Color(0xFF979797),
-                      fontFamily: 'GT-Walsheim-Regular'),
-                  focusedBorder: border,
-                  enabledBorder: border,
-                  labelText: 'Card Holder',
-                ),
               ),
               SizedBox(
                 height: 12,
@@ -303,6 +258,42 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
               MaterialButton(
                 onPressed: () {
                   sendInvestmentToFirebaseFirestore();
+                  final fullname = FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("investor_users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text("Oops, something went wrong");
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        // Map<String, dynamic> data =
+                        //     snapshot.data!.data() as Map<String, dynamic>;
+                        return Text(
+                          '${snapshot.data!['fullname']}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF979797),
+                          ),
+                        );
+                      } else {
+                        throw Error;
+                      }
+                    },
+                  );
+                  final phone = phoneController.text;
+                  final email = FirebaseAuth.instance.currentUser!.email;
+                  final investmentAmount = investmentAmountController.text;
+                  if (_formKey.currentState!.validate()) {
+                    makePaymentFlutterwave(context, fullname.toString(), email!,
+                        investmentAmount, phone);
+                  }
                 },
                 color: const Color(0xFF2AB271),
                 textColor: Colors.white,
@@ -311,7 +302,7 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 12.0, horizontal: 20.0),
                 child: const Text(
-                  "Confirm Investment",
+                  "Pay",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                 ),
               ),
@@ -327,11 +318,12 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
   sendInvestmentToFirebaseFirestore() {
     User? user = _auth.currentUser;
     investments.doc(currentUserId).collection("user-investments").add({
+      "phoneNumber": phoneController.text,
       "investmentAmount": investmentAmountController.text,
       "company": this.widget.projectTitle,
       "uid": currentUserId,
     });
-    Fluttertoast.showToast(msg: "Completed Successfully");
+    Fluttertoast.showToast(msg: "Moving to Flutterwave Gateway");
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -343,14 +335,37 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
     );
   }
 
-  void onCreditCardModelChange(CreditCardModel? creditCardModel) {
-    setState(() {
-      cardNumber = creditCardModel!.cardNumber;
-      expiryDate = creditCardModel.expiryDate;
-      cardHolderName = creditCardModel.cardHolderName;
-      cvvCode = creditCardModel.cvvCode;
-      isCvvFocused = creditCardModel.isCvvFocused;
-    });
+  makePaymentFlutterwave(BuildContext context, String fullname, String email,
+      String investmentAmount, String phone) async {
+    try {
+      Flutterwave flutterwave = Flutterwave.forUIPayment(
+        context: context,
+        publicKey: publicKey,
+        encryptionKey: encryptionKey,
+        currency: currency,
+        amount: investmentAmount,
+        email: email,
+        fullName: "Ian Wanjohi",
+        txRef: DateTime.now().toIso8601String(),
+        isDebugMode: true,
+        phoneNumber: phone,
+        acceptMpesaPayment: true,
+        acceptRwandaMoneyPayment: true,
+      );
+
+      final response = await flutterwave.initializeForUiPayments();
+      if (response == null) {
+        return Fluttertoast.showToast(msg: "Null Error Response");
+      } else if (response.status == "Transaction successful") {
+        sendInvestmentToFirebaseFirestore();
+        print(response.data);
+        return Fluttertoast.showToast(msg: "Successful Transaction");
+      } else {
+        print(response.message);
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   @override

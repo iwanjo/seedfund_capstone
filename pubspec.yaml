@@ -52,6 +52,10 @@ dependencies:
   image_picker: ^0.8.5
   flutter_credit_card: ^3.0.1
   intl: ^0.17.0
+  http: ^0.13.4
+  web3dart: ^2.3.5
+  flutterwave: ^1.0.1
+
 
 
 dev_dependencies:
@@ -85,6 +89,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - src/abis/SeedfundInvestment.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

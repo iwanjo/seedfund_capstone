@@ -8,26 +8,26 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ChatDetails extends StatefulWidget {
+class SMEChatDetails extends StatefulWidget {
   final otherUserUid;
   final receiverName;
 
-  ChatDetails({Key? key, this.otherUserUid, this.receiverName})
+  SMEChatDetails({Key? key, this.otherUserUid, this.receiverName})
       : super(key: key);
 
   @override
-  _ChatDetailsState createState() =>
-      _ChatDetailsState(otherUserUid, receiverName);
+  _SMEChatDetailsState createState() =>
+      _SMEChatDetailsState(otherUserUid, receiverName);
 }
 
-class _ChatDetailsState extends State<ChatDetails> {
+class _SMEChatDetailsState extends State<SMEChatDetails> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   final otherUserUid;
   final receiverName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   var chatDocId;
   var messageController = TextEditingController();
-  _ChatDetailsState(this.otherUserUid, this.receiverName);
+  _SMEChatDetailsState(this.otherUserUid, this.receiverName);
   @override
   void initState() {
     super.initState();

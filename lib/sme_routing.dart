@@ -1,3 +1,4 @@
+import 'package:Seedfund/views/sme-views/sme_chat.dart';
 import 'package:Seedfund/views/sme-views/sme_discover.dart';
 import 'package:Seedfund/views/sme-views/sme_home.dart';
 import 'package:Seedfund/views/sme-views/sme_profile.dart';
@@ -21,6 +22,9 @@ class _SMEPageRoutingState extends State<SMEPageRouting> {
       uid: loggedInUser!.uid,
     ),
     SMEDiscover(
+      uid: loggedInUser!.uid,
+    ),
+    SMEChat(
       uid: loggedInUser!.uid,
     ),
     SMEProfile(
@@ -49,6 +53,15 @@ class _SMEPageRoutingState extends State<SMEPageRouting> {
               icon: const Icon(Icons.category),
               title: const Text(
                 "Discover",
+                style: TextStyle(
+                    fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
+              ),
+              selectedColor: const Color(0xFF2AB271),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.message),
+              title: const Text(
+                "Chats",
                 style: TextStyle(
                     fontSize: 14.0, fontFamily: "GT-Walsheim-Regular"),
               ),
