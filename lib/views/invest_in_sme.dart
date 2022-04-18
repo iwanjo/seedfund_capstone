@@ -272,8 +272,6 @@ class _InvestInSMEProjectState extends State<InvestInSMEProject> {
                         return const CircularProgressIndicator();
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
-                        // Map<String, dynamic> data =
-                        //     snapshot.data!.data() as Map<String, dynamic>;
                         return Text(
                           '${snapshot.data!['fullname']}',
                           style: TextStyle(
