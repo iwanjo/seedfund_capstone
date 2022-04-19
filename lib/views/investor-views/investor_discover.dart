@@ -239,7 +239,6 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                 child: TabBarView(
                   controller: _tabBarController,
                   children: [
-                    allBusinessView(),
                     FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection("fundingProjects")
@@ -277,6 +276,7 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                           }
                           throw Error();
                         }),
+                    agricultureBusinessView(),
                     allBusinessView(),
                     allBusinessView(),
                     allBusinessView(),
@@ -292,6 +292,200 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
       ),
       drawer: NavigationDrawer(
         uid: currentUser!.uid,
+      ),
+    );
+  }
+
+  agricultureBusinessView() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+      child: Column(
+        children: <Widget>[
+          Card(
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            child: InkWell(
+              onTap: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    // alignment: Alignment.bottomLeft,
+                    children: <Widget>[
+                      Ink.image(
+                        height: 160,
+                        image: AssetImage("assets/agri-1.jpg"),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 8.0,
+                            ),
+                            child: Text(
+                              "EasyFarm",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
+                        ),
+                        child: Text(
+                            "At EasyFarm we empower farmers with our data-centric product, FarmBetter, to provide them with actionable data to improve their farming techniques"),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: <Widget>[
+                          const SizedBox(width: 10),
+                          Icon(Icons.monetization_on),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "KSH 700,000",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.calendar_today),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "40 Days",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            child: InkWell(
+              onTap: () {},
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    // alignment: Alignment.bottomLeft,
+                    children: <Widget>[
+                      Ink.image(
+                        height: 160,
+                        image: AssetImage("assets/recycling.jpeg"),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 8.0,
+                            ),
+                            child: Text(
+                              "Circular Venture",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
+                        ),
+                        child: Text(
+                            "We recycle plastic bottles and turn them into quality shirts and other clothing materials."),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: <Widget>[
+                          const SizedBox(width: 10),
+                          Icon(Icons.monetization_on),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "300,000 KSH",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.calendar_month),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                              vertical: 6.0,
+                            ),
+                            child: (Text(
+                              "30 Days",
+                              style: TextStyle(fontSize: 12.0),
+                            )),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -456,21 +650,21 @@ class _InvestorDiscoverState extends State<InvestorDiscover>
                               vertical: 6.0,
                             ),
                             child: (Text(
-                              "300,000/500,000 KSH Collected",
+                              "300,000 KSH",
                               style: TextStyle(fontSize: 12.0),
                             )),
                           ),
                           const SizedBox(
                             width: 10,
                           ),
-                          Icon(Icons.people),
+                          Icon(Icons.calendar_month),
                           Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: 5.0,
                               vertical: 6.0,
                             ),
                             child: (Text(
-                              "554 Investors",
+                              "28 Days",
                               style: TextStyle(fontSize: 12.0),
                             )),
                           ),
